@@ -1,0 +1,48 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}View Application{%endblock title%}
+{%block pagetitle%}View Application{%endblock pagetitle%}
+
+{%block main%}
+<form>
+    {% if error %}
+    <br>
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {% elif success %}
+    <br>
+    <div class="alert alert-success" role="alert">
+        {{success}}
+    </div>
+    {%endif%}
+
+    {%for form in forms%}
+    {% for field in form %}
+    {%if field.html_name not in hidden %}
+    <div class='veloce-form-control {% if field.html_name in form.full %} full {% endif %}'>
+        <label for="{{field.id_for_label }}">{{field.label|safe}}</label>
+        <div class='flex {% if field.errors %} invalid {%endif%}' {% if field.errors %} data-toggle='tooltip'
+            data-html='true' data-placement="left" title='{{field.errors}}' {%endif%}>
+            {{field}}
+        </div>
+    </div>
+    {%endif%}
+    {% endfor %}
+    {%endfor%}
+    <div class="veloce-form-control full">
+        <div class="flex">
+            <a href="{% url 'list-application' %}" class="btn btn-link">Back</a>
+        </div>
+    </div>
+    <br><br>
+</form>
+<script>
+    $( document ).ready(function(){
+        $('<h3 class="mt-2 ml-2">CO-BORROWER Bank Details</h3><hr>').insertBefore($("#id_bank_account_number").parent().parent());
+        $('<h3 class="mt-3 ml-2">BORROWER Bank Details</h3><hr>').insertBefore($("#id_borrower_bank_account_number").parent().parent());
+   });
+</script>
+{%endblock main%}

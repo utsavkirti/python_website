@@ -1,0 +1,42 @@
+{%extends "veloce/layouts/view.html"%}
+
+{%load static%}
+
+{%block title%}Verify Profile{%endblock title%}
+{%block pagetitle%}Verify Profile{%endblock pagetitle%}
+
+
+{%block pre%}
+<div style="padding: 10px">
+    <div class="progressbar">
+        <label>STEP 0 of {{num_steps}}</label>
+    </div>
+</div>
+{%endblock pre%}
+
+
+{%block post%}
+<div class='veloce-form-control full'>
+    <label for="id_agreement"></label>
+    <div class='flex '>
+
+        <label class="checkbox-container">
+
+            I agree that all the information in
+            <a href="{%url 'edit-profile'%}">my profile</a>
+            is accurate to the best of my knowledge.
+
+            <input type="checkbox" name="agreement" required="True" id="id_agreement">
+            <span class="checkmark"></span>
+        </label>
+
+    </div>
+</div>
+
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a href="{% url 'list-application' %}" class="btn btn-link">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Next">
+    </div>
+</div>
+{%endblock post%}

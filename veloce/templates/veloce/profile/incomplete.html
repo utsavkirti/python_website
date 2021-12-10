@@ -1,0 +1,43 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Profile Incomplete{%endblock title%}
+{%block pagetitle%}Profile Incomplete{%endblock pagetitle%}
+
+{%block main%}
+<form>
+    <div style="display: flex; align-items: start;padding-top:20px;">
+        <p style="font-size: 50px; flex: 0; padding: 20px; padding-top:0px;">
+            ❌
+        </p>
+        <div style="flex: 1; text-align: left; font-size: 18px;">
+            {% if status == 'incomplete'%}
+                <p>
+                    You have not completed your profile! You need to complete the following remaining elements
+                    to be able to use this platform:
+                </p>
+                <ul>
+                    {%for item in incomplete%}
+                    <li>{{item.title}}</li>
+                    {%endfor%}
+                </ul>
+            {%else%}
+                <p>
+                    <b>Access Denied!</b> Your updated profile info needs to be approved by admin first!
+                </p>
+            {%endif%}
+        </div>
+    </div>
+
+    {% if status == 'incomplete'%}
+        <div class="veloce-form-control full">
+            <div class="flex">
+                <a href="{% url 'logout' %}" class="btn btn-link">Cancel</a>
+                <a href="{% url 'edit-profile' %}" class="btn btn-primary">Edit Profile</a>
+            </div>
+        </div>
+    {%endif%}
+</form>
+
+{%endblock main%}

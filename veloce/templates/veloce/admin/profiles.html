@@ -1,0 +1,122 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Profiles{%endblock title%}
+{%block pagetitle%}Profiles{%endblock pagetitle%}
+
+{%block main%}
+<div class="profiles" style="width:600px;">
+    {% if error %}
+    <br>
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {% elif success %}
+    <br>
+    <div class="alert alert-success" role="alert">
+        {{success}}
+    </div>
+    {%endif%}
+
+    <form method="GET">
+        <div class="flex" style="margin: 0 -10px">
+            <div class="veloce-form-control">
+                <label>Account Type</label>
+                <div class="flex">
+                    <select name="accountType">
+                        <option value="-1" {%if val == account_type %} selected {%endif%}>All</option>
+                        {%for val,text in account_types%}
+                        <option value="{{val}}" {%if val == account_type %} selected {%endif%}>{{text}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+            </div>
+            <div class="veloce-form-control">
+                <label>Profile Status</label>
+                <div class="flex">
+                    <select name="filterBy">
+                        <option value="0" {%if filter_by == 0 %} selected {%endif%}>Pending Review</option>
+                        <option value="1" {%if filter_by == 1 %} selected {%endif%}>Rejected</option>
+                        <option value="2" {%if filter_by == 2 %} selected {%endif%}>Approved</option>
+                    </select>
+                </div>
+            </div>
+            <div class="veloce-form-control">
+                <label>&nbsp;</label>
+                <div class="flex">
+                    <input type='submit' class="btn btn-primary" value="Refresh" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {%if not profiles%}
+    <div style="text-align:center">
+        <br>No profiles found! Wait till more profiles are submitted.
+    </div>
+    {%endif%}
+
+    {%for profile in profiles%}
+    <a class='profile-link' href="{%url 'admin-review-profile' profile.id%}">
+        <div class='profile'>
+            <p>
+                <b>Profile #{{profile.id}}:</b> {{profile.first_name}} {{profile.last_name}} <br>
+                <em>created at: {{profile.created_at}}, last updated at: {{profile.updated_at}}</em>
+            </p>
+        </div>
+    </a>
+    {%endfor%}
+    <br><br>
+</div>
+
+
+<style>
+    .new-button {
+        display: inline-block;
+        text-align: center;
+        padding: 15px;
+        width: 150px;
+        background-color: rgb(85, 230, 193);
+        border-radius: 40px;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+        transition: 1s;
+    }
+
+    .new-button:hover {
+        text-decoration: none;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .profile-link {
+        text-decoration: none !important;
+    }
+
+    .profile {
+        padding: 20px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        margin-top: 20px;
+        transition: background 0.5s;
+        color: #000;
+    }
+
+    .profile:hover {
+        background: rgba(85, 230, 193, 0.4);
+    }
+
+    .profile p {
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .profile p em {
+        font-weight: normal;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+</style>
+{%endblock main%}

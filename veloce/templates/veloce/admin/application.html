@@ -1,0 +1,109 @@
+{%extends "veloce/layouts/view.html"%}
+
+{%load static%}
+
+{%block title%}Review Application{%endblock title%}
+{%block pagetitle%}Review Application{%endblock pagetitle%}
+
+{%block pre%}
+<div class="user">
+    <b>{{borrower1.title}}:</b>
+    {{borrower1.co_borrower_email}} <em>({{borrower1.type}})</em>
+    <br>
+    <a class="status-badge" href="{{borrower1.url}}">
+        View Profile
+    </a>
+    <span class="status-badge">
+        {%if borrower1.verified%}Profile verified ✅{%else%}Profile not yet verified ❌{%endif%}
+    </span>
+
+</div>
+
+{%if borrower2%}
+<div class="user">
+    <b>{{borrower2.title}}:</b>
+    {{borrower2.name}}, {{borrower2.email}} <em>({{borrower2.type}})</em>
+    <br>
+    <a class="status-badge" href="{{borrower2.url}}">
+        View Profile
+    </a>
+    <span class="status-badge">
+        {%if borrower2.verified%}Profile verified ✅{%else%}Profile not yet verified ❌{%endif%}
+    </span>
+</div>
+{%endif%}
+<style>
+    .user {
+        padding: 10px;
+        margin: 10px;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+    }
+
+    .user div {
+        flex: 1;
+    }
+
+    .user a {
+        color: white;
+    }
+
+    .status-badge {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 3px 5px;
+        background: gray;
+        color: #e3e3e3;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+</style>
+{%endblock pre%}
+
+{%block footer%}
+<form>
+    <div class="veloce-form-control full">
+        <div class="flex">
+            {% if not is_approved_by_lender %}
+                <a class="btn btn-link" href="{%url 'admin-reject-application' application.id%}">Reject</a>
+            {% endif %}
+            <a class="btn btn-primary" href="{%url 'admin-approve-application' application.id%}">Next</a>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function(){
+        var data = ''
+        $.ajax({
+                url: 'http://192.168.0.20:7004/get-score-by-id/',
+                // url: 'http://veloceinnovations.tech/get-score-by-id/',
+
+                data: {
+                    'coborrower_id': $('#id_coborrower_email').val(),
+                    'borrower_id': $('#id_borrower_email').val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var check_finance = {{ check_finance_available }}
+                    if(check_finance == true){
+                        $('<h3 class="mt-3 ml-2 dealer-finance">Dealers Given Finance Scheme</h3>').insertAfter($("#id_total_emi").parent().parent());
+                        $('<table class="table table-bordered dealers-scheme-table"><thead><tr><th scope="col">Loan Amount</th><th scope="col">ROI</th><th scope="col">Tenure</th><th scope="col">EMI</th><th scope="col">Total EMI</th><th scope="col">Total Interest</th></tr></thead><tbody><tr><td>{{ required_amt }}</td><td>{{ rate_of_interest }}%</td><td>{{ tenure }} months</td><td>{{ emi }}</td><td>{{ total_emi }}</td><td>{{ total_interest }}</td></tr></tbody></table>').insertAfter('.dealer-finance');
+                        $('<h3 class="mt-3 ml-2 credit-rate">Credit Rating</h3>').insertAfter('.dealers-scheme-table');
+                        $('<table class="table table-bordered"><thead><tr><th scope="col">Credit Rating Details</th><th scope="col">Co-Borrower/Seller</th><th scope="col">Borrower/Purchaser</th></tr></thead><tbody><tr><td>Name</td><td>{{ borrower1.email }}</td><td>{{ borrower1.co_borrower_email }}</td></tr><tr><td>CRIF Rating</td><td>'+ data.coborrower_crif +'</td><td>'+ data.borrower_crif +'</td></tr><tr><td>Veloce Rating</td><td>'+ data.coborrower_total +'</td><td>'+ data.borrower_total +'</td></tr><tr><td>Max Eligible Finance</td><td>0</td><td>0</td></tr></tbody></table>').insertAfter('.credit-rate');
+                    }
+                    else{
+                        $('<h3 class="mt-3 ml-2 credit-rate">Credit Rating</h3>').insertAfter($("#id_total_emi").parent().parent());
+                        $('<table class="table table-bordered"><thead><tr><th scope="col">Credit Rating Details</th><th scope="col">Co-Borrower/Seller</th><th scope="col">Borrower/Purchaser</th></tr></thead><tbody><tr><td>Name</td><td>{{ borrower1.email }}</td><td>{{ borrower1.co_borrower_email }}</td></tr><tr><td>CRIF Rating</td><td>'+ data.coborrower_crif +'</td><td>'+ data.borrower_crif +'</td></tr><tr><td>Veloce Rating</td><td>'+ data.coborrower_total +'</td><td>'+ data.borrower_total +'</td></tr><tr><td>Max Eligible Finance</td><td>0</td><td>0</td></tr></tbody></table>').insertAfter('.credit-rate');
+                    }
+                },                    
+        });
+        var check_finance = {{ check_finance_available }}
+        $('<h3 class="mt-2 ml-2">CO-BORROWER Bank Details</h3><hr>').insertBefore($("#id_bank_account_number").parent().parent());
+        $('<h3 class="mt-3 ml-2">BORROWER Bank Details</h3><hr>').insertBefore($("#id_borrower_bank_account_number").parent().parent());
+    });
+</script>
+{%endblock footer%}

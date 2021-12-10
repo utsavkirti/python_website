@@ -1,0 +1,173 @@
+{%extends "veloce/layouts/view.html"%}
+
+{%load static%}
+
+{%block title%}{{type}}'s Details{%endblock title%}
+{%block pagetitle%}{{type}}'s Details{%endblock pagetitle%}
+
+{%block pre%}
+<style>
+    .user {
+        padding: 10px;
+        margin: 10px;
+        width: calc(100% - 20px);
+        box-sizing: border-box;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+    }
+
+    .user div {
+        flex: 1;
+    }
+
+    .user a {
+        color: white;
+    }
+
+    .status-badge {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 3px 5px;
+        background: gray;
+        color: #e3e3e3;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+</style>
+{%endblock pre%}
+
+{%block main%}
+
+<div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h4 class="mb-0">
+          {%if data.data.acc_type == 1 %}{{data.data.name}}{%else%} {{company.0.fields.org_name}} {%endif%}
+        </button>
+      </h4>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+          <div class="loan">
+            {% if data.data.acc_type == 1%}
+                <table class="details" style="width: 60%; float: left; margin-bottom: 25px;">
+                    <tr>
+                        <td><b>Name:</b></td>
+                        <td>{{data.data.name}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Father/Husband Name:</b></td>
+                        <td>{{general.0.fields.father_husband_no}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>DOB:</b></td>
+                        <td>{{general.0.fields.birthdate}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address:</b></td>
+                        <td>{{address.0.fields.unit_number}} {{address.0.fields.street_address}} {{address.0.fields.city}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>State:</b></td>
+                        <td>{{address.0.fields.state}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Pincode:</b></td>
+                        <td>{{address.0.fields.pin_code}}</td>
+                    </tr>
+                </table>
+                <table class="details" style="width: 38%; float: left; margin-bottom: 25px;">
+                    <tr>
+                        <td><b>Gender:</b></td>
+                        <td>{{general.0.fields.gender}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Marital Status:</b></td>
+                        <td>{{general.0.fields.marital_status}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{{email}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Phone:</b></td>
+                        <td>{{data.data.phone}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>PAN:</b></td>
+                        <td>{{identification.0.fields.pan_number}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Aadhaar No:</b></td>
+                        <td>{{identification.0.fields.aadhar_number}}</td>
+                    </tr>
+                </table>
+              {%else%}
+                <table class="details" style="width: 60%; float: left; margin-bottom: 25px;">
+                    <tr>
+                        <td><b>Company Name:</b></td>
+                        <td>{{company.0.fields.org_name}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>CIN/LLPIN:</b></td>
+                        <td>{%if company.0.fields.soc %}{{company.0.fields.soc}}{%else%}{{company.0.fields.company_register_no}}{%endif%}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Telephone:</b></td>
+                        <td>{{address.0.fields.tel_number}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address:</b></td>
+                        <td>{{address.0.fields.unit_number}} {{address.0.fields.street_address}} {{address.0.fields.city}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>State:</b></td>
+                        <td>{{address.0.fields.state}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Pincode:</b></td>
+                        <td>{{address.0.fields.pin_code}}</td>
+                    </tr>
+                </table>
+                <table class="details" style="width: 38%; float: left; margin-bottom: 25px;">
+                    <tr>
+                        <td><b>Email:</b></td>
+                        <td>{{email}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>PAN:</b></td>
+                        <td>{{additional_company.0.fields.pan_number}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>GST No:</b></td>
+                        <td>{{additional_company.0.fields.gst_number}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Udyog Aadhar No:</b></td>
+                        <td>{{additional_company.0.fields.udyog_aadhar_number}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Udyog Aadhar No:</b></td>
+                        <td>{{email}}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Aadhaar No:</b></td>
+                        <td>{{additional_company.0.fields.aadhar_number}}</td>
+                    </tr>
+                </table>
+              {%endif%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
+
+{%block footer%}
+<script>
+
+</script>
+{%endblock footer%}

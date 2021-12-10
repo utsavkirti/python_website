@@ -1,0 +1,62 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block main%}
+<form method='POST' enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {% if error %}
+    <br>
+    <div class="veloce-form-control full">
+        <div class="alert alert-danger" role="alert">
+            {{error}}
+            {{form.non_field_errors}}
+        </div>
+    </div>
+    {% elif success %}
+    <br>
+    <div class="veloce-form-control full">
+        <div class="alert alert-success" role="alert">
+            {{success}}
+        </div>
+    </div>
+    {%endif%}
+
+    {%block pre%}{%endblock pre%}
+
+    {% for field in form %}
+    {% if not field.is_hidden %}
+    <div class='veloce-form-control {% if field.html_name in form.full %} full {% endif %}'>
+        <label for="{{field.id_for_label }}">{{field.label|safe}}</label>
+
+        {% if field.errors %}
+            <div class='flex invalid'>
+                {{field}}
+            </div>
+            <div class="error-list">
+                {{field.errors}}
+            </div>
+        {% else %}
+            <div class='flex'>
+                {{field}}
+            </div>
+        {%endif%}
+    </div>
+    {%else%}
+        <div class='flex'>
+            {{field}}
+        </div>
+    {%endif%}
+    {% endfor %}
+    <br><br>
+
+    {%block post%}{%endblock post%}
+
+    <br><br><br><br>
+</form>
+
+{%block style%}{%endblock style%}
+{%block script%}{%endblock script%}
+
+{%endblock main%}

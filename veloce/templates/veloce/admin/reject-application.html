@@ -1,0 +1,15 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Reject Application{%endblock title%}
+{%block pagetitle%}Reject Application{%endblock pagetitle%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a class="btn btn-link" href="{% url 'admin-review-application' id %}">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Submit" style="width:100%">
+    </div>
+</div>
+{%endblock post%}

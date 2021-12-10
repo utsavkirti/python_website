@@ -1,0 +1,18 @@
+{%extends "veloce/layouts/view.html"%}
+
+{%load static%}
+
+{%block title%}Review Profile{%endblock title%}
+{%block pagetitle%}Review Profile{%endblock pagetitle%}
+
+{%block footer%}
+<form method='POST'>
+    {% csrf_token %}
+    <div class="veloce-form-control full">
+        <div class="flex">
+            <a class="btn btn-link" href="{%url 'admin-reject-profile' id%}" value="Reject">Reject</a>
+            <input class="btn btn-primary" type="submit" value="Accept">
+        </div>
+    </div>
+</form>
+{%endblock footer%}

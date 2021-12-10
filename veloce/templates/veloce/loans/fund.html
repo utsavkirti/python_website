@@ -1,0 +1,96 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Fund{%endblock title%}
+{%block pagetitle%}Fund{%endblock pagetitle%}
+
+{%block pre%}
+<div style="padding: 10px">
+    <div class="slidecontainer">
+        <input type="range" min="1" max="{{amount}}" value="50" class="slider" id="myRange">
+    </div>
+</div>
+
+<b>Agreement:</b>
+<br>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue feugiat iaculis. Duis iaculis, risus et sagittis
+elementum, nibh turpis aliquet enim, mattis congue purus dui eget est. Praesent aliquam a ante sit amet sodales.
+Maecenas quam est, condimentum id condimentum sit amet, placerat eget odio. Nullam placerat leo congue orci elementum
+sagittis. Fusce dignissim vehicula leo, sed eleifend neque rhoncus vitae. Maecenas vitae orci ex. Nam mollis urna sed
+orci vestibulum imperdiet.
+
+Morbi consequat pretium felis sed tempor. Suspendisse eget pharetra enim, non auctor eros. Nullam porta, lacus sit amet
+suscipit malesuada, justo metus vehicula purus, sit amet ultrices nibh nibh in orci. Fusce ac risus at diam auctor
+posuere sit amet id purus. Nunc cursus libero a arcu tempus, in bibendum arcu euismod. Donec dapibus ex sem, ut cursus
+mi dapibus quis. Phasellus ullamcorper sodales nisi, lobortis dapibus nibh egestas nec. In malesuada nisl nec ex
+blandit, et gravida elit elementum.
+
+{%endblock pre%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a href="{% url 'overview' %}" class="btn btn-link">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </div>
+</div>
+{%endblock post%}
+
+{%block script%}
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("id_amount");
+    output.value = slider.value;
+
+    slider.oninput = function () {
+        output.value = this.value;
+    }
+    output.oninput = function () {
+        slider.value = this.value
+    }
+</script>
+{%endblock script%}
+
+{%block style%}
+<style>
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+</style>
+{%endblock style%}

@@ -1,0 +1,18 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Register{%endblock title%}
+{%block pagetitle%}Register{%endblock pagetitle%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a href="{% url 'login' %}" class="btn btn-link">Sign in</a>
+        <input class="btn btn-primary" type="submit" value="Sign up">
+    </div>
+</div>
+{%endblock post%}
+
+{%block style%}
+{%endblock style%}

@@ -1,0 +1,371 @@
+{%extends "veloce/layouts/base.html" %}
+
+{%load static%}
+
+{%block content%}
+
+<style>
+    form {
+        max-width: 700px;
+    }
+    
+    .veloce-form-control {
+        width: calc(50% - 5px);
+    }
+
+    .action-btn {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 250px !important;
+        padding: 20px;
+        text-align: center !important;
+        background-color: rgba(85, 230, 194, 0.968);
+    }
+
+    .sidebar {
+        flex-grow: 0 !important;
+        width: 250px;
+        min-width: 250px;
+    }
+    @media (min-width: 1200px){
+    .container, .container-lg, .container-md, .container-sm, .container-xl {
+        max-width: 100% !important;
+        }
+    }   
+     @media (min-width: 268px) {
+        .sidebar {
+          display: none;
+        }
+      }
+      @media (min-width: 992px) {
+        .sidebar {
+          display: block;
+        }
+        .mobile-nav {
+          display: none;
+        }
+      }
+
+    .sidebar a {
+        color: rgba(0, 0, 0, 0.6) !important;
+        font-weight: 500 !important;
+    }
+
+    .sidebar .btn {
+        width: 100%;
+        text-align: left;
+    }
+
+    .sidebar .subitem {
+        padding: 5px;
+        padding-left: 25px;
+        display: block;
+        font-size: 14px;
+    }
+
+    .sidebar .active {
+        color: black;
+        font-weight: 600 !important;
+    }
+
+    .sidebar .menu {
+        position: fixed;
+        height: 100%;
+        width: inherit;
+        background-color: rgba(154, 236, 219, 0.2);
+        border-right: 1px solid rgba(154, 236, 219, 0.5);
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+        padding: 0px 50px 0 30px;
+        box-sizing: border-box;
+    }
+
+  @media screen and (max-width: 600px) {
+        .content {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+
+    #ytWidget {
+        position: fixed;
+        left: 15px;
+        bottom: 15px;
+        vertical-align: bottom;
+        display: inline-block;
+        z-index: 1;
+    }
+
+    #yt-widget .yt-listbox{
+        height: 200px;
+        width: 164px;
+        overflow: auto;
+        bottom:100%;
+    }
+
+    .yt-servicelink{
+    display: none !important;
+    }
+
+    .btn-outline-info:hover {
+            color: #fff;
+            background-color: #009957;
+            border-color: #009957;
+        }
+        .btn-outline-info {
+            color: #009957;
+            border-color: #009957;
+        }
+</style>
+
+<!-- POPUP login model start -->
+<div class="modal fade" id="SignIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="padding: 0px 15px;">
+            <div class="logo-block"  style="padding: 0px; margin: 0px; max-width: 30%;">
+                <a href="{% url 'home' %}">
+                    <img src="/static/beaglelogo.png" alt="" class="imgs-fluid logo" />
+                </a>
+           </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="loan_application_form" action="http://192.168.0.20:7004/accounts/login/?next=/o/authorize/%3Fclient_id%3DhG5XBhRRLwz4SVxQ9KlG5OBWF390XvWyjkzA1v4k%26redirect_uri%3Dhttp%3A//192.168.0.20%3A7003/complete/vauth/%26response_type%3Dcode" novalidate="novalidate">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="form-group col-sm-12">
+                        <label for="id_email"><label class="required" style="color: rgba(0, 0, 0, 0.6);" for="id_email">Email:</label></label>
+                        <div class="d-block">
+                            <input type="text" name="email" value="{{request.user.email}}" style="box-shadow: 0px 0px 0px;" class="form-control" title="id_email" required id="id_email">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="id_password"><label class="required" for="id_password" style="color: rgba(0, 0, 0, 0.6) !important;">Password:</label></label>
+                        <!-- <input type="password" name="password" class="form-control" title="password" required id="id_password" style="box-shadow: 0px 0px 0px;"><br> -->
+                        <div class="d-block">
+                            <input type="password" name="password" class="form-control" title="password" required id="id_password" style="box-shadow: 0px 0px 0px;"><br> 
+                            <input type="checkbox" onclick="myFunction()" style="box-shadow: 0px 0px 0px; color: rgba(0, 0, 0, 0.6)">Show Password</div>
+                            
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <button class="btn btn-info" style="background-color: #009957;border-color: white;">Log in</button>
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="options text-center text-md-right mt-1">
+              <p>Not a member? <a href = "http://192.168.0.20:7004/accounts/register/"  style="color: #009957">Register</a></p>
+            </div>
+            <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- POPUP login model end -->
+
+<div class="flex">
+
+    <div class="sidebar">
+        <div class="menu logo-block">
+         <a href="/">
+             <img src="/static/beaglelogo.png" alt="" class="imgs-fluid logo" />
+         </a>
+        <a href="http://192.168.0.20:7002/" class="btn">
+            Beagle Bazaar Home
+        </a>
+        
+            {%for item in menu%}
+                <a href="{{item.url}}" class="{{item.classname}}">{{item.name}}</a>
+            {%endfor%}
+            {%if not authenticated%}
+            <a href="javascript:void(0);" class="btn" data-toggle="modal" data-target="#SignIn" >Pending Application</a>
+            <a href="javascript:void(0);" class="btn" data-toggle="modal" data-target="#SignIn" >Sanctioned</a>
+            <a href="javascript:void(0);" class="btn" data-toggle="modal" data-target="#SignIn" >Accepted</a>
+            <a href="javascript:void(0);" class="btn" data-toggle="modal" data-target="#SignIn" >Disbursed</a>
+            <a href="http://192.168.0.20:7004/accounts/register/" class="btn" >Register</a>
+            <a href="javascript:void(0);" class="btn" data-toggle="modal" data-target="#SignIn" >Sign In</a>
+            
+        {%endif%}
+        {%if authenticated%}
+            {% if not user.profile.account_type == 3 %}
+                <a href= "http://192.168.0.20:7004/pdf_report?report_id={{user.email}} " TARGET="_blank" class="btn">
+                    Beagle Score Report
+                </a>
+            {%endif%}
+        {%endif%}
+                <a href="http://www.facebook.com/" style="margin-left: 10px" target="_blank" ><span class="fa fa-facebook"></span></a>
+                <a href="https://www.linkedin.com/signup/cold-join?trk=guest_homepage-basic_nav-header-join" style="margin-left: 10px" target="_blank"><span class="fa fa-linkedin"></span></a>
+                <a href="https://www.instagram.com/accounts/login/?hl=en" style="margin-left: 10px" target="_blank"><span class="fa fa-instagram"></span></a>
+                <a href="https://web.whatsapp.com/" style="margin-left: 10px" target="_blank"><span class="fa fa-whatsapp"></span></a>
+                <a href="https://www.skype.com/en/features/skype-web/" style="margin-left: 10px" target="_blank"><span class="fa fa-skype"></span></a>
+                <a href="https://www.twitter.com/login" style="margin-left: 10px" target="_blank" ><span class="fa fa-twitter"></span></a>
+        </div>
+    </div>
+
+    {%block canvas%}
+    <div class="content">
+        <!--Header Top-->
+        <div class="header-top">
+            <div class="auto-container">
+                <div class="clearfix">
+                    <!--Top Left-->
+                    <div class="top-left">
+                        <ul class="header-info-list mobile-nav">
+                                <div class="menu-icon" >
+                                    <span class="line"></span>
+                                    <span class="line"></span>
+                                    <span class="line"></span>
+                                </div>
+                            </ul>
+                        <ul class="header-info-list">
+                            <li><span class="icon fa fa-envelope"></span>beaglebazaar@gmail.com</li>
+                        </ul>
+                    </div>
+                    <!--Top Right-->
+                    <div class="top-right">
+                        <!--Social Box-->
+                        <ul class="social-box">
+                        {% if user.is_authenticated %}
+                            <li>
+                                <div class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" style="color: #009958;background-color: #f9f8fc;" aria-expanded="false">{{ user.first_name }} {{ user.last_name }}</a>
+                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="javaScript:void(0);">{{ user.email }}</a>
+                                    <a class="dropdown-item" href="javaScript:void(0);"> (Registered Level – {{ user.profile.verification_level }} user) </a>
+                                    <a class="dropdown-item" href="http://192.168.0.20:7004/overview" >Edit Profile</a>
+                                    <a href="http://192.168.0.20:7004/accounts/change-password/" class="dropdown-item" >Change Password</a>
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                  </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 ">
+            <h1>{%block title%}{%endblock title%}</h1>
+
+
+            {%block main%}{%endblock main%}
+            <!--Scroll to top-->
+            <div class="scroll-to-top scroll-to-target" data-target="html" style="display: block">
+                <span class="fa fa-angle-double-up"></span>
+            </div>
+            <!--Scroll to top-->
+        </div>
+        <div id="ytWidget"></div>
+        <!--Main Footer-->
+        <footer class="main-footer">
+                <div class="auto-container">
+                    <!--Widgets Section-->
+                    <div class="widgets-section">
+                        <div class="row clearfix">
+                            <!--Column-->
+                            <div class="big-column col-lg-12 col-md-12 col-sm-12">
+                                <div class="row clearfix">
+                                    <!--Footer Column-->
+                                    <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                        <div class="footer-widget links-widget">
+                                            <h2>Connect with Us</h2>
+                                            <ul class="footer-link">
+                                                <li><a href="/about-veloce-fintech">About Beagle Fintech</a></li>
+                                                <li><a href="/how-veloce-fintech-works">How Beagle Fintech Works</a></li>
+                                                <li><a href="/testimonials">Testimonials</a></li>
+                                                <li><a href="/contact-us">Contact Us</a></li>
+                                                <li><a href="/faqs-ftr">FAQ's</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--Footer Column-->
+                                    <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                        <div class="footer-widget links-widget">
+                                            <h2>Borrow</h2>
+                                            <ul class="footer-link">
+                                                <li><a href="/loans-ftr">Loans</a></li>
+                                                <li><a href="/loans-eligibility">Loan Eligibility</a></li>
+<!--                                                <li><a href="/type-of-loans">Type of Loans</a></li>-->
+<!--                                                <li><a href="/loans-rates-fees">Loans Rates & Fees</a></li>-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--Footer Column-->
+                                    <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                        <div class="footer-widget links-widget">
+                                            <h2>Invest / Finance</h2>
+                                            <ul class="footer-link">
+                                                <li><a href="/finance-with-us">Finance With Us</a></li>
+                                                <li><a href="/finance-eligibility">Finance Eligibility</a></li>
+<!--                                                <li><a href="javaScript:void(0);">How to Start P2P Investment</a></li>-->
+<!--                                                <li><a href="javaScript:void(0);">Fees & Return</a></li>-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                        <div class="footer-widget links-widget">
+                                            <h2>Policies</h2>
+                                            <ul class="footer-link">
+                                                <li><a href="/terms-of-use-new">Terms of use</a></li>
+                                                <li><a href="/terms-of-use-new">Privacy & Security Policy</a></li>
+<!--                                                <li><a href="/grievance-redressal">Grievance Redressal</a></li>-->
+<!--                                                <li><a href="/fair-practices-code">Fair Practices Code</a></li>-->
+<!--                                                <li><a href="/disclaimer">RBI Guidelines & Disclaimer</a></li>-->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Footer Bottom-->
+                <div class="footer-bottom">
+                    <div class="auto-container">
+                        <div class="row clearfix">
+                            <div class="column col-md-6 col-sm-12 col-xs-12">
+                                <div class="copyright">Copyrights &copy; 2020 Beagle Fintech. All Rights Reserved. </div>
+                            </div>
+                            <div class="column col-md-6 col-sm-12 col-xs-12">
+                                <ul class="footer-nav">
+<!--                                    <li><a href="/privacy-policy">Privacy Policy</a></li>-->
+                                    <li><a href="/terms-of-use-new">Privacy Policy</a></li>
+                                    <li><a href="/terms-of-use-new">Legal Terms</a></li>
+                                    <li><a href="/faqs-ftr">FAQ’s</a></li>
+                                    <li><a href="/support">Support</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        <!--End Main Footer-->
+    </div>
+    {%endblock canvas%}
+</div>
+<script
+    src="https://translate.yandex.net/website-widget/v1/widget.js?widgetId=ytWidget&pageLang=en&widgetTheme=dark&autoMode=false"
+    type="text/javascript"></script>
+<script>
+    jQuery("#ytWidget").click(() => {
+        jQuery('#yt-widget .yt-listbox__col').children('.yt-listbox__cell').appendTo('.yt-listbox__col:first');
+        jQuery('#ytWidget ul').not(':first').remove();
+
+    });
+</script>
+<script>
+    function myFunction() {
+      var x = document.getElementById("id_password");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+</script>
+{%endblock content%}

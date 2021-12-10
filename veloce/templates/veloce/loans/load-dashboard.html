@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+<!-- Stylesheets -->
+<link href="/static/veloce/css/home/bootstrap.css" rel="stylesheet">
+<link href="/static/veloce/css/home/style.css" rel="stylesheet">
+<link href="/static/veloce/css/home/jquery.fancybox.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="">
+    <div class="">
+
+        <!-- Preloader -->
+        <div class="preloader"></div>
+        <h1 class="text-center">User own Loans</h1>
+        <!--About Section-->
+        <section class="mx-5 my-5">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <table class="table table-responsive table-striped table-hover table-bordered">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">Loan_Id</th>
+                            <th scope="col">Application_Id</th>
+                            <th scope="col">Application Holder</th>
+                            <th scope="col">app_reviewed_by</th>
+                            <th scope="col">loan_amount</th>
+                            <th scope="col">sanctioned_loan_amount</th>
+                            <th scope="col">disbursement_amount</th>
+                            <th scope="col">dealer_scheme_roi</th>
+                            <th scope="col">dealer_scheme_emi</th>
+                            <th scope="col">loan_tenure</th>
+                            <th scope="col">interest_rate</th>
+                            <th scope="col">lender_amount_after_veloce_roi</th>
+                            <th scope="col">lender_roi_after_veloce_roi</th>
+                            <th scope="col">veloce_amount</th>
+                            <th scope="col">veloce_roi</th>
+                            <th scope="col">is_accepted</th>
+                            <th scope="col">is_coaccepted</th>
+                            <th scope="col">created_at</th>
+                            <th scope="col">accepted_at</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for user_own_loan in user_own_loans %}
+                          <tr>
+                            <th scope="row">{{user_own_loan.id}}</th>
+                            <th scope="row">{{user_own_loan.application.id}}</th>
+                            <td>{{user_own_loan.application.user.username}}</td>
+                            <td>{{user_own_loan.app_reviewed_by}}</td>
+                            <td>{{user_own_loan.loan_amount}}</td>
+                            <td>{{user_own_loan.sanctioned_loan_amount}}</td>
+                            <td>{{user_own_loan.disbursement_amount}}</td>
+                            <td>{{user_own_loan.dealer_scheme_roi}}</td>
+                            <td>{{user_own_loan.dealer_scheme_emi}}</td>
+                            <td>{{user_own_loan.loan_tenure}}</td>
+                            <td>{{user_own_loan.interest_rate}}</td>
+                            <td>{{user_own_loan.lender_amount_after_veloce_roi}}</td>
+                            <td>{{user_own_loan.lender_roi_after_veloce_roi}}</td>
+                            <td>{{user_own_loan.veloce_amount}}</td>
+                            <td>{{user_own_loan.veloce_roi}}</td>
+                            <td>{{user_own_loan.is_accepted}}</td>
+                            <td>{{user_own_loan.is_coaccepted}}</td>
+                            <td>{{user_own_loan.created_at}}</td>
+                            <td>{{user_own_loan.accepted_at}}</td>
+                          </tr>
+                          {% endfor user_own_loans %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!--End About Section-->
+
+    </div>
+    
+
+    <script src="/static/veloce/js/home/jquery.js"></script>
+    <script src="/static/veloce/js/home/bootstrap.min.js"></script>
+    <script src="/static/veloce/js/home/jquery.fancybox.js"></script>
+    <script src="/static/veloce/js/home/appear.js"></script>
+    <script src="/static/veloce/js/home/owl.js"></script>
+    <script src="/static/veloce/js/home/wow.js"></script>
+    <script src="/static/veloce/js/home/slick.js"></script>
+    <script src="/static/veloce/js/home/script.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+</div>
+
+<style>
+    .banner {
+        width: 100%;
+        height: 300px;
+        background-image: url('/static/veloce/images/cover.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: hue-rotate(40deg) brightness(1.1);
+        color: black;
+    }
+
+    .banner .inner {
+        width: 100%;
+        height: 100%;
+        background: rgba(154, 236, 219, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .banner b {
+        font-size: 40px;
+        font-weight: bolder;
+        text-align: center;
+        flex: 0;
+    }
+
+    .banner p {
+        flex: 0;
+    }
+
+    .content {
+        padding: 0 !important;
+        max-width: 100%;
+        width: calc(-250px + 100%);
+    }
+</style>
+
+</body>
+</html>

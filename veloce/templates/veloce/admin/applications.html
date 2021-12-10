@@ -1,0 +1,195 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}{% if filter_by == None %} Loan Applications {%elif filter_by == 0 %} Pending Applications {%elif filter_by == 1 %} Rejected Applications {%elif filter_by == 2 %} Sactioned Applications {%endif%}{%endblock title%}
+{%block pagetitle%}Applications{%endblock pagetitle%}
+
+{%block main%}
+<div class="profiles col-lg-4" >
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible mt-3" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if error %}
+    <br>
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {% elif success %}
+    <br>
+    <div class="alert alert-success" role="alert">
+        {{success}}
+    </div>
+    {%endif%}
+
+
+    <form method="GET">
+        <div class="flex" style="margin: 0 -10px">
+            <div class="veloce-form-control">
+                <label>Sort By</label>
+                <div class="flex">
+                    <select name="sortBy">
+                        <option value="0" {%if sort_by == 0 %} selected {%endif%}>Oldest First</option>
+                        <option value="1" {%if sort_by == 1 %} selected {%endif%}>Newest First</option>
+                        <option value="2" {%if sort_by == 2 %} selected {%endif%}>Loan Value Ascending</option>
+                        <option value="3" {%if sort_by == 3 %} selected {%endif%}>Loan Value Descending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="veloce-form-control">
+                <label>Status</label>
+                <div class="flex">
+                    <select name="filterBy">
+                        <option value="0" {%if filter_by == 0 %} selected {%endif%}>Pending Review</option>
+                        <option value="1" {%if filter_by == 1 %} selected {%endif%}>Rejected</option>
+                        <option value="2" {%if filter_by == 2 %} selected {%endif%}>Sanctioned</option>
+                        <option value="3" {%if filter_by == 3 %} selected {%endif%}>Accepted by Dealer</option>
+                        <option value="4" {%if filter_by == 4 %} selected {%endif%}>Disbursed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="veloce-form-control">
+                <label>&nbsp;</label>
+                <div class="flex">
+                    <input type='submit' class="btn btn-primary" value="Refresh" />
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+    {%if not applications%}
+    <div style="text-align:center">
+        <br>No applications found! Wait till more applications are submitted.
+    </div>
+    {%endif%}
+    {% if is_approved_status %}
+        {%for application in applications%}
+        <a class='profile-link' href="{%url 'admin-review-application' application.veloce_app.id%}">
+            <div class='profile'>
+                {%if is_rejected_app %}
+                    <span class="veloce-badge rejected" style="float:right; margin-top: -5px;padding: 0px 10px;">
+                        Rejected By: {%if application.rejected_by == request.user %} Me {%else%} {{application.rejected_by.first_name}} {{application.rejected_by.last_name}} {%endif%}
+                    </span>
+                {%endif%}
+                <p>
+                    Application No: <b> {{application.veloce_app.id}}</b> <br>
+                    Co-borrower:<b> {{application.veloce_app.user.first_name}} {{application.veloce_app.user.last_name}}</b> <br />
+                    Borrower: <b>{{application.veloce_app.applicationstep1.borrower_email}} </b> <br>
+                    Loan Application Amount:<b> {{application.veloce_app.applicationstep1.required_loan_amount}}</b><br />
+                    Loan Application Date:<b> {{application.veloce_app.created_at}}</b><br />
+                </p>
+            </div>
+        </a>
+        {%endfor%}
+    {% elif is_loan_app == 'Accepted' %} 
+        {%for application in applications%}
+        <a class='profile-link' href="{%url 'view-loan' application.id%}">
+            <div class='profile'>
+                <p>
+                    Application No: <b>{{application.application.id}}</b> <br>
+                    Co-borrower:<b> {{application.application.user.first_name}} {{application.application.user.last_name}}</b> <br />
+                    Borrower:<b> {{application.application.applicationstep1.borrower_email}}</b> <br>
+                    Loan Application Amount:<b> {{application.application.applicationstep1.required_loan_amount}}</b><br />
+                    Loan Application Date: <b>{{application.created_at}}</b>
+                </p>
+            </div>
+        </a>
+        {%endfor%}
+    {% elif is_loan_app == 'Disbursed' %}    
+        {%for application in applications%}
+        <a class='profile-link' href="{%url 'view-loan' application.id%}">
+            <div class='profile'>
+                <p>
+                    Application No: <b>{{application.application.id}}</b> <br>
+                    Co-borrower:<b> {{application.application.user.first_name}} {{application.application.user.last_name}}</b> <br />
+                    Borrower:<b> {{application.application.applicationstep1.borrower_email}}</b> <br>
+                    Loan Application Amount:<b> {{application.application.applicationstep1.required_loan_amount}}</b><br />
+                    Loan Application Date: <b>{{application.created_at}}</b>
+                </p>
+            </div>
+        </a>
+        {%endfor%}
+    {% else %}
+        {%for application in applications%}
+        <a class='profile-link' href="{%url 'admin-review-application' application.id%}">
+            <div class='profile'>
+                <p>
+                    Application No: <b> {{application.id}}</b> <br>
+                    Co-borrower:<b> {{application.user.first_name}} {{application.user.last_name}}</b> <br />
+                    Borrower:<b> {{application.applicationstep1.borrower_email}}</b> <br>
+                    Loan Application Amount:<b> {{application.applicationstep1.required_loan_amount}}</b><br />
+                    Loan Application Date: <b>{{application.created_at}}</b>
+                </p>
+            </div>
+        </a>
+        {%endfor%}
+    {% endif %}
+    <br><br>
+</div>
+
+
+<style>
+    .new-button {
+        display: inline-block;
+        text-align: center;
+        padding: 15px;
+        width: 150px;
+        background-color: rgb(85, 230, 193);
+        border-radius: 40px;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+        transition: 1s;
+    }
+
+    .new-button:hover {
+        text-decoration: none;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .profile-link {
+        text-decoration: none !important;
+    }
+
+    .profile {
+        padding: 20px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        margin-top: 20px;
+        transition: background 0.5s;
+        color: #000;
+    }
+
+    .profile:hover {
+        background: rgba(85, 230, 193, 0.4);
+    }
+
+    .profile p {
+        font-size: 15px;
+        margin: 0;
+    }
+
+    .profile p em {
+        font-weight: normal;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .veloce-badge.accepted {
+        background-color: rgba(85, 230, 193, 0.4) !important;
+    }
+    .veloce-badge.rejected {
+        background-color: #B22222 !important;
+        color: white !important;
+    }
+</style>
+{%endblock main%}

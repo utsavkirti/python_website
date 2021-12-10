@@ -1,0 +1,84 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Approve Application{%endblock title%}
+{%block pagetitle%}Approve Application{%endblock pagetitle%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a class="btn btn-link" href="{% url 'admin-review-application' id %}">Back</a>
+        {% if not app_is_approved and not is_submitted %}
+            <input class="btn btn-primary" type="submit" value="Submit" style="width:100%">
+        {% endif %}
+    </div>
+</div>
+
+{%if repay%}
+<script>
+    const repay = {{ repay }};
+
+    function inverse_emi() {
+        const r = parseFloat(document.getElementById("id_interest_rate").value) / 1200;
+        const n = parseFloat(document.getElementById("id_loan_tenure").value);
+        const f = Math.pow(1 + r, n);
+        const amount = (repay / n) * (f - 1) / (r * f)
+        return Math.round(amount * 100) / 100;
+    }
+
+    $("input").change(() => {
+        document.getElementById("id_loan_amount").value = inverse_emi();
+    })
+</script>
+{%endif%}
+<script>
+var ramt = parseInt($('#id_loan_amount').val());
+$(document).on("change paste keydown","#id_sanctioned_loan_amount",function(event) {
+    if (parseInt(this.value) > ramt) {
+        alert("Value can't be greater than required amount!");
+        $('#id_sanctioned_loan_amount').val("");
+        $('#id_disbursement_amount').val(0)
+    }
+});
+$(document).ready(function(){
+    var is_finance_available_status = {{is_finance_available}}
+    if(is_finance_available_status == true){
+        $('#id_loan_tenure').attr('readonly', true);
+        $('#id_sanctioned_loan_amount').attr('readonly', true);
+        $('#id_disbursement_amount').attr('readonly', true);
+    }
+    var array = window.location.href.slice(window.location.href.indexOf('?') + 1).split('/');
+    $(document).on("change paste keyup","#id_interest_rate",function(event) {
+        //alert($(this).val());
+        $.ajax({
+            url: '{% url "calculate_disbursement_amount" %}',
+            data: {
+                'app_id': {{id}},
+                'roi': $(this).val()
+            },
+            dataType: 'json',
+            success: function (data) { 
+                //alert(data.status);
+                if (data.status)
+                {
+                    //alert(data.disbursement_amount);
+                    $('#id_disbursement_amount').val(data.disbursement_amount);
+                }
+            }
+        });
+    });
+});
+</script>
+<script>
+    $(document).ready(function(){
+        $("#id_loan_amount").css("color", "grey");
+        $("#id_dealer_scheme_roi").css("color", "grey");
+        $("#id_dealer_scheme_emi").css("color", "grey");
+        $('#id_disbursement_amount').attr('readonly', true);
+        $('#id_sanctioned_loan_amount').on('change keyup', function() {
+            $('#id_disbursement_amount').val($('#id_sanctioned_loan_amount').val());
+        })
+    })
+</script>
+{%endblock post%}

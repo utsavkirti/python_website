@@ -1,0 +1,22 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Verify Email{%endblock title%}
+{%block pagetitle%}Verify Email{%endblock pagetitle%}
+
+{%block pre%}
+<p style="padding: 10px">
+    Please check your email for a one-time password
+    so that we can verify that this email really belongs to you.
+</p>
+{%endblock pre%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        <a href="{% url 'register' %}" class="btn btn-link">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Verify">
+    </div>
+</div>
+{%endblock%}

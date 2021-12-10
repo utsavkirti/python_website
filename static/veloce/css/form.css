@@ -1,0 +1,207 @@
+.veloce-form-control {
+  display: inline-block;
+  padding: 5px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.veloce-form-control label:not(.checkbox-container) {
+  font-size: 10px;
+  padding-left: 10px;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+form input, form select, form .btn, form .select-selected {
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  box-sizing: border-box;
+  height: 45px;
+  transition: 0.5s;
+  max-width: calc(100% - 10px);
+}
+
+form textarea {
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  box-sizing: border-box;
+  transition: 0.5s;
+  max-width: calc(100% - 10px);
+  resize: none;
+}
+
+select:disabled, input:disabled {
+  background-color: rgb(235, 235, 228);
+}
+
+form input:focus, form select:focus, form .select-selected:focus {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.veloce-form-control .invalid input, .veloce-form-control .invalid select, .veloce-form-control .invalid .select-selected {
+  /* box-shadow: 0px 0px 6px rgba(255, 99, 71, 0.9); */
+  border: 1px solid rgba(255, 99, 71, 0.9);
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex * {
+  flex: 1;
+}
+
+form .full {
+  width: calc(100% - 10px);
+}
+
+.checkbox-container {
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  display: block;
+  padding-left: 40px;
+  margin: 10px;
+}
+
+.checkbox-container input {
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  left: 0;
+  top: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+
+.checkbox-container:hover input~.checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+
+.checkbox-container input:checked~.checkmark {
+  background-color: rgb(154, 236, 219);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+
+.checkbox-container input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 12.5px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.progressbar {
+  height: 25px;
+  background-color: rgba(44, 58, 71, 1.0);
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.progressbar .bar {
+  background-color: rgb(0, 153, 88);
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.progressbar .bar.rejected {
+  background-color: #B22222;
+}
+
+.progressbar label {
+  float: left;
+  margin: 4px 10px;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.btn {
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: rgb(0, 153, 88) !important;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  color: black;
+}
+
+.btn-link {
+  color: rgb(0, 153, 88) !important;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  text-decoration: none !important;
+}
+
+.btn-link::after {
+  transition: 0.5s;
+  content: "";
+  display: block;
+  position: relative;
+  width: calc(100% + 20px);
+  height: calc(100% + 25px);
+  border-radius: 5px;
+  top: -35px;
+  left: -10px;
+}
+
+.btn-link:hover::after {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.veloce-badge {
+  display: inline-block;
+  margin: 10px 0px;
+  padding: 5px;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.3)
+}
+
+.asterisk {
+    content: " *";
+    color: red;
+    font-size: 14px;
+}

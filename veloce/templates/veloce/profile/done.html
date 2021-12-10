@@ -1,0 +1,27 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Profile Complete{%endblock title%}
+{%block pagetitle%}Profile Complete{%endblock pagetitle%}
+
+{%block main%}
+<form>
+    <div style="display: flex; align-items: center;">
+        <p style="font-size: 50px; flex: 0; padding: 20px;">
+            ✅
+        </p>
+        <p style="flex: 1; text-align: left; font-size: 18px;">
+            You have completed your profile! You can edit this any time from the sidebar on the left.
+            You are now finally ready to apply for your first loan!
+        </p>
+    </div>
+    <div class="veloce-form-control full">
+        <div class="flex">
+            <a href="{% url 'logout' %}" class="btn btn-link">Logout</a>
+            <a href="{% url 'list-application' %}" class="btn btn-primary">Applications</a>
+        </div>
+    </div>
+</form>
+
+{%endblock main%}

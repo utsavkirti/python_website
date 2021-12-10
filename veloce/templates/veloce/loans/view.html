@@ -1,0 +1,223 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Loan Details(App No:{{loan.application.id}}){%endblock title%}
+{%block pagetitle%}Loan Details(App No:{{loan.application.id}}){%endblock pagetitle%}
+
+{%block main%}
+
+{% if error %}
+<br>
+<div class="alert alert-danger" role="alert">
+    {{error}}
+</div>
+{% elif success %}
+<br>
+<div class="alert alert-success" role="alert">
+    {{success}}
+</div>
+{%endif%}
+
+
+<div class="loan">
+    <div class="row">
+        <div class="col">
+            <b>Loan Amount</b>
+            ₹{{loan.sanctioned_loan_amount}}
+        </div>
+        <div class="col">
+            <b>Interest Rate</b>
+            {% if application_details.coborrower == request.user or request.user.email == application_details.borrower_email %}
+                {{loan.lender_roi_after_veloce_roi}}% p.a.
+            {%else%}
+                {{loan.interest_rate}}% p.a.
+            {% endif %}
+<!--            {{loan.lender_roi_after_veloce_roi}}% p.a.-->
+        </div>
+        <div class="col">
+            <b>Disbursement Amount</b>
+            {% if loan.application.user.email == user.email %}
+                ₹{{loan.lender_amount_after_veloce_roi}}
+            {% elif loan.dealer_scheme_emi <= 0 and user.profile.account_type != 2 %}
+                ₹{{loan.disbursement_amount}}
+            {% else %}
+                ₹{{loan.lender_amount_after_veloce_roi}}
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <div class="progressbar">
+        <label>
+            Disbursement approved
+        </label>
+        <div class="bar" style="width:100%"></div>
+    </div>
+</div>
+<div class="loan">
+    <table class="details" style="width: 60%; float: left;">
+        <tr>
+            <td><b>Co-borrower Email</b></td>
+            <td>{{loan.application.user.email}}</td>
+        </tr>
+        <tr>
+            <td><b>Bill No</b></td>
+            <td>{{application_details.bill_no}}</td>
+        </tr>
+        <tr>
+            <td><b>Bill Date</b></td>
+            <td>{{application_details.bill_date}}</td>
+        </tr>
+        <tr>
+            <td><b>Inquired by / Billing Party Email</b></td>
+            <td>{{application_details.inquired_by}}</td>
+        </tr>
+        <tr>
+            <td><b>Required Loan Amount</b></td>
+            <td>{{application_details.required_loan_amount}}</td>
+        </tr>
+        <tr>
+            <td><b>EMI on Past Finance Availed</b></td>
+            <td>{{application_details.emi_on_past_finance}}</td>
+        </tr>
+        <tr>
+            <td><b>Financed Rate Of Interest</b></td>
+            <td>
+                {% if fiance_details %}
+                    {{fiance_details.dealers_given_finance_scheme.rate_of_interest}}%
+                {% else %}
+                    0.00%
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <table class="details" style="width: 38%; float: left;">
+        <tr>
+            <td><b>Borrower Email</b></td>
+            <td>{{application_details.borrower_email}}</td>
+        </tr>
+        <tr>
+            <td><b>Total Bill Amount</b></td>
+            <td>{{application_details.bill_amount}}</td>
+        </tr>
+        <tr>
+            <td><b>Billing Party Name</b></td>
+            <td>{{application_details.billing_party_name}}</td>
+        </tr>
+        <tr>
+            <td><b>Down Payment</b></td>
+            <td>{{application_details.down_payment}}</td>
+        </tr>
+        <tr>
+            <td><b>Total EMI</b></td>
+            <td>{{current_emi|add:application_details.emi_on_past_finance}} </td>
+        </tr>
+        <tr>
+            <td><b>Financed Tenure</b></td>
+            <td>
+                {% if fiance_details %}
+                    {{fiance_details.dealers_given_finance_scheme.tenure}} months
+                {% else %}
+                    {{loan.loan_tenure}}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td><b>Current Loan EMI</b></td>
+            <td>
+                {% if current_emi == 0 %}
+                    {{application_details.current_loan_emi}}
+                {%else%}
+                    {{current_emi}}
+                {%endif%}
+            </td>
+        </tr>
+    </table>
+</div>
+<br>
+<div class="loan">
+    <div>
+        <b>Lender's Name:</b> {{lender_details.user.first_name}} {{lender_details.last_name}}<br/>
+        <b>Lender's Email:</b> {{lender_details.user}}
+    </div>
+</div>
+
+<form method="POST">
+    {%csrf_token%}
+    <div class="veloce-form-control full">
+        <div class="flex">
+            {%if lender%}
+                <a style=" border:none; padding: 10px; margin-right:10px;" href="{%url 'loans'%}"
+                    class="btn btn-link">Back</a>
+    <!--            <a style=" border:none; padding:10px;" href="{% url 'fund-loan' loan.id%}" class="btn btn-primary">Fund</a>-->
+                {% if not loan.is_coaccepted %}
+                    <a style=" border:none; padding:10px;" href="{% url 'disburse-loan' loan.id%}" class="btn btn-primary">Disbursement Approved</a>
+                {% endif %}
+            {%else%}
+                <a style=" border:none; padding: 10px;" href="{%url 'my-loans' loan.application.id %}" class="btn btn-link">Back</a>
+                {%if not loan.is_accepted and loan.application.user == request.user%}
+                    <input type="submit" style="margin-left:10px; border:none; padding:10px;" class="btn btn-primary"
+                        value="Accept">
+                {%endif%}
+            {%endif%}
+        </div>
+    </div>
+</form>
+<br><br>
+
+<style>
+    .loan {
+        padding: 10px;
+    }
+
+    .loan .details {
+        padding: 10px;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .loan .details td:first-child {
+        width: 260px;
+        padding: 5px 0px;
+    }
+
+    .loan h3 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .loan h3 em {
+        font-weight: normal;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    .loan form input {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        background: rgba(240, 240, 240, 0.8);
+        cursor: pointer;
+    }
+
+    .loan .row {
+        width: 100%;
+        margin: 0
+    }
+
+    .loan .col {
+        text-align: center;
+        border: solid;
+        border-color: rgba(0, 0, 0, 0.1);
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    .loan .col b {
+        margin-bottom: 5px;
+        display: block;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+</style>
+{%endblock main%}}

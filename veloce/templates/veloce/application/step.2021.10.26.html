@@ -1,0 +1,376 @@
+{%extends "veloce/layouts/form.html"%}
+
+{%load static%}
+
+{%block title%}Apply: Step {{step}}{%endblock title%}
+{%block pagetitle%}Apply: Step {{step}}{%endblock pagetitle%}
+
+{%block pre%}
+<div style="padding: 10px">
+    <div class="progressbar">
+        <label>STEP {{step}} of {{num_steps}}</label>
+        <div class="bar" style="width:calc(100% * {{step}}/{{num_steps}})"></div>
+    </div>
+</div>
+{%endblock pre%}
+
+{%block post%}
+<div class="veloce-form-control full">
+    <div class="flex">
+        {%if step <= 1%}
+        <a href="{% url 'list-application' %}" class="btn btn-link">Cancel</a>
+        {%else%}
+        <a href="{% url 'step-application' app_id prev %}" class="btn btn-link">Back</a>
+        {%endif%}
+        {%if step == num_steps%}
+        <input class="btn btn-primary" type="submit" value="Submit">
+        {%else%}
+        <input class="btn btn-primary" type="submit" id="id_next" value="Next">
+        {%endif%}
+    </div>
+</div>
+{%endblock post%}
+
+{%block script%}
+<script>
+    fetch("/static/veloce/js/state-city.json").then(x => x.json()).then(x => {
+        window.states = x;
+    });
+    $('#id_tenure').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0))
+            e.preventDefault();
+    });
+
+    $('#id_invoice_amount').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+        var length = $(this).val().length;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0) || length > 7)
+            e.preventDefault();
+    });
+
+    $('#id_downpayment_amount').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+        var length = $(this).val().length;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0) || length > 7)
+            e.preventDefault();
+    });
+
+    $('#id_loan_amount').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+        var length = $(this).val().length;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0) || length > 7)
+            e.preventDefault();
+    });
+
+    $('#id_loan_tenure').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0))
+            e.preventDefault();
+    });
+
+    $('#id_fixed_monthly_expenses').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+        var length = $(this).val().length;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0) || length > 7)
+            e.preventDefault();
+    });
+
+    $('#id_other_emis').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+        var length = $(this).val().length;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0) || length > 7)
+            e.preventDefault();
+    });
+
+    if ($("#id_ifsc_code").length > 0) {
+        $("#id_ifsc_code").change(function () {
+        var ifsc_code = $(this).val();
+        $.ajax({
+        type: 'GET',
+        url: '/bank/ifsc',
+        data: {
+            'ifsc_code': ifsc_code
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.length > 0){
+            obj = JSON.parse(data)
+            $('#id_bank_name').val(obj.BANK);
+            $('#id_bank_name').attr("readonly", true);
+            $("#id_ifsc_code").removeAttr("style");
+            }
+            else {
+                $("#id_ifsc_code").css({border: "1px solid rgba(255, 99, 71, 0.9)"});
+            }
+        }
+        });
+        });
+    }
+
+    if ($("#id_borrower_ifsc_code").length > 0) {
+        $("#id_borrower_ifsc_code").change(function () {
+        var ifsc = $(this).val();
+        $.ajax({
+        type: 'GET',
+        url: '/bank/ifsc',
+        data: {
+            'ifsc_code': ifsc
+        },
+        dataType: 'json',
+        success: function (data) {
+            if(data.length > 0){
+            obj = JSON.parse(data)
+            $('#id_borrower_bank_name').val(obj.BANK);
+            $('#id_borrower_bank_name').attr("readonly", true);
+            $("#id_borrower_ifsc_code").removeAttr("style");
+            }
+            else {
+                $("#id_borrower_ifsc_code").css({border: "1px solid rgba(255, 99, 71, 0.9)"});
+            }
+        }
+        });
+        });
+    }
+
+    $( document ).ready(function(){
+        var array = window.location.href.slice(window.location.href.indexOf('?') + 1).split('/');
+        if(array[array.length-1] == 'step1') {
+            $.ajax({
+                url: '/get-application-info/',
+                data: {
+                    'app_id': array[array.length-2]
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status)
+                    {
+                        $('#id_coborrower_email').val(data.coborrower_email);
+                        $('#id_coborrower_email').prop('readonly', true);
+                        $('#id_borrower_email').prop('readonly', true);
+                        $('#id_bill_no').prop('readonly', true);
+                        $('#id_bill_amount').prop('readonly', true);
+                        $('#id_bill_date').prop('readonly', true);
+                        $('#id_billing_party_name').prop('readonly', true);
+                        $('#id_inquired_by').prop('readonly', true);
+                        $('#id_borrower_email').val(data.borrower_email);
+                        $('#id_bill_no').val(data.bill_no);
+                        $('#id_bill_amount').val(data.bill_amount);
+                        $('#id_required_loan_amount').val(data.bill_amount);
+                        $('#id_bill_date').val(data.bill_date);
+                        console.log(data);
+                        $('#id_billing_party_name').val(data.billing_party_name);
+                        $('#id_inquired_by').val(data.inquired_by);
+                        $('#id_dealers_given_finance_scheme').val(data.dealers_given_finance_scheme);
+                        if (data.dealers_given_finance_scheme == 0){
+                            $('#id_total_emi').parent().parent().css('display', 'none');
+                        $('#id_current_loan_emi').parent().parent().css('display', 'none');
+                        }
+                    }
+                }
+            });
+
+        }
+        else if(array[array.length-1] == 'step2'){
+            $('<h6 class="mt-2 ml-2"><b>CO-Borrower Bank Details</b></h6><hr>').insertAfter($(".progressbar").parent());
+            $('<h6 class="mt-3 ml-2"><b>Borrower Bank Details</b></h6><hr>').insertAfter($("#id_bank_name").parent().parent());
+            $.ajax({
+                url: '/get-application-info/',
+                data: {
+                    'app_id': array[array.length-2]
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status)
+                    {
+                        $.ajax({
+                            url: 'http://innovations.veloce.market/get-bank-details_by-user-id/',
+                            type: 'POST',
+                            data: {'user_email': data.coborrower_email},
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.status)
+                                {
+                                    $('#id_bank_account_number').val(data.account_no);
+                                    $('#id_ifsc_code').val(data.ifsc_code);
+                                    $('#id_bank_name').val(data.bank_name);
+                                }
+                            }
+                        });
+                        $.ajax({
+                            url: 'http://117.217.126.114:8989/get-bank-details_by-user-id/',
+                            type: 'POST',
+                            data: {'user_email': data.borrower_email},
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.status)
+                                {
+                                    $('#id_borrower_bank_account_number').val(data.account_no);
+                                    $('#id_borrower_ifsc_code').val(data.ifsc_code);
+                                    $('#id_borrower_bank_name').val(data.bank_name);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        $('#id_required_loan_amount').prop('readonly', true);
+        $('#id_dealers_given_finance_scheme').prop('readonly', true);
+        $("#id_down_payment").on("change keypress paste", function(e){
+            var down_payment_val = $(this).val();
+            if(down_payment_val){
+                if(down_payment_val < 0){
+<!--                    $("#id_current_loan_emi").val(0);-->
+                    $("#id_total_emi").val(0);
+                }
+                else{
+                    if($('#id_bill_amount').val() > $('#id_down_payment').val()){
+                        var tot_bill_amount = parseInt($('#id_bill_amount').val())
+                        $('#id_required_loan_amount').val(tot_bill_amount - down_payment_val);
+                        var array = window.location.href.slice(window.location.href.indexOf('?') + 1).split('/');
+                        $.ajax({
+                            url: '/calculate-total-emi/',
+                            data: {
+                                'app_id': array[array.length-2],
+                                'required_loan_amount': $('#id_required_loan_amount').val()
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.status)
+                                {
+                                    $('#id_current_loan_emi').val(data.total_emi);
+                                }
+                            }
+                        });
+                    }
+                    else{
+<!--                        if($('#id_down_payment').parent().find('errorlist'))-->
+                        alert("Down payment should be less than Total bill amount.");
+                        $('#id_required_loan_amount').val(0);
+                        $('#id_current_loan_emi').val(0);
+                        e.preventDefault();
+                    }
+                    setTimeout(function(){
+                        var current_loan_emi = $("#id_current_loan_emi").val();
+                        var emi_on_past_finance = $("#id_emi_on_past_finance").val();
+                        $("#id_total_emi").val(parseFloat(current_loan_emi) + parseFloat(emi_on_past_finance));
+                    }, 150);
+                }
+            }else{
+                $('#id_required_loan_amount').val($('#id_bill_amount').val());
+                $('#id_total_emi').val(0);
+<!--                $('#id_current_loan_emi').val(0);-->
+            }
+        })
+    });
+    $('#id_next').on('click', function(e){
+        if($('#id_required_loan_amount').val() < 100000){
+            alert("Required Loan amount should be greater than 100000.")
+            e.preventDefault();
+        }
+    })
+    $(document).ready(function(){
+<!--        $('#id_emi_on_past_finance').attr('readonly', 'readonly');-->
+        $('#id_current_loan_emi').attr('readonly', 'readonly');
+        $('#id_total_emi').attr('readonly', 'readonly');
+        var array = window.location.href.slice(window.location.href.indexOf('?') + 1).split('/');
+        if($('#id_bill_amount').val() > $('#id_down_payment').val()){
+            $.ajax({
+                url: '/calculate-total-emi/',
+                data: {
+                    'app_id': array[array.length-2],
+                    'required_loan_amount': parseInt($('#id_required_loan_amount').val())
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data)
+                    if (data.status)
+                    {
+                        $('#id_current_loan_emi').val(data.total_emi);
+                    }
+                }
+            });
+        }
+    });
+    $('#id_total_emi').val($('#id_current_loan_emi').val());
+    $("#id_emi_on_past_finance").on("change keyup paste", function(){
+        setTimeout(function(){
+            var current_loan_emi = $("#id_current_loan_emi").val();
+            var emi_on_past_finance = $("#id_emi_on_past_finance").val();
+            $("#id_total_emi").val(parseFloat(current_loan_emi) + parseFloat(emi_on_past_finance));
+        }, 100);
+    });
+    function getCookie(c_name)
+    {
+        if (document.cookie.length > 0)
+        {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1)
+            {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        }
+        return "";
+    }
+    function restrictAlpha(e){
+    var a = [];
+    var k = e.which;
+    var length = $(this).val().length;
+
+    for (i = 48; i < 58; i++)
+        a.push(i);
+
+    if (!(a.indexOf(k)>=0))
+            e.preventDefault();
+    }
+
+    function restrictNo(e){
+    e = (e) ? e : window.event;
+    var charCode = (e.which) ? e.which : e.keyCode;
+    if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 122)) {
+        return true;
+    }
+    else{ e.preventDefault(); }
+    }
+    $('#id_bank_account_number').keypress('click', restrictAlpha)
+</script>
+{%endblock script%}

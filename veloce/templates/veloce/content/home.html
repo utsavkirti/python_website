@@ -1,0 +1,652 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block pagetitle%} Home {%endblock pagetitle%}
+
+{%block canvas%}
+
+<!-- Stylesheets -->
+<link href="/static/veloce/css/home/bootstrap.css" rel="stylesheet">
+<link href="/static/veloce/css/home/style.css" rel="stylesheet">
+<link href="/static/veloce/css/home/jquery.fancybox.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<div class="content">
+    <div class="page-wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader"></div>
+
+        <!-- Main Header-->
+        <header class="main-header">
+            <!--Header Top-->
+            <div class="header-top">
+                <div class="auto-container">
+                    <div class="clearfix">
+                        <!--Top Left-->
+                        <div class="top-left">
+                            <ul class="header-info-list mobile-nav">
+                                <div class="menu-icon" >
+                                    <span class="line"></span>
+                                    <span class="line"></span>
+                                    <span class="line"></span>
+                                </div>
+                            </ul>
+                            <ul class="header-info-list">
+                                <li><span class="icon fa fa-envelope"></span>
+                                    <a style="color:green;"
+                                        href="mailto:support@velocefintech.com">beaglebazaar@gmail.com</a>
+                            </ul>
+                        </div>
+                        <!--Top Right-->
+                        <div class="top-right">
+                            <!--Social Box-->
+                            <ul class="social-box">
+                                {% if user.is_authenticated %}
+                                    <li>
+                                        <div class="dropdown">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" style="color: #009958;background-color: #f9f8fc;" aria-expanded="false">{{ user.first_name }} {{ user.last_name }}</a>
+                                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="javaScript:void(0);">{{ user.email }}</a>
+                                            <a class="dropdown-item" href="javaScript:void(0);"> (Registered Level – {{ user.profile.verification_level }} user) </a>
+                                            <a class="dropdown-item" href="http://192.168.0.20:7004/overview" >Edit Profile</a>
+                                            <a href="http://192.168.0.20:7004/accounts/change-password/" class="dropdown-item" >Change Password</a>
+                                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                          </div>
+                                        </div>
+                                    </li>
+                                {% endif %}
+                                    
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--End Main Header -->
+
+        <!--Main Slider-->
+
+        <div class="banner">
+            <div class="inner">
+                <b>Beagle Fintech</b>
+                <p>Helping you grow with simple peer-to-peer lending.</p>
+            </div>
+        </div>
+        <!--End Main Slider-->
+
+        <!--Services Section-->
+        <section class="services-section">
+            <div class="auto-container">
+                <div class="inner-container">
+                    <div class="row clearfix">
+
+                        <!--Services Block-->
+                        <div class="services-block col-lg-4 col-md-6 col-sm-12 col-12">
+                            <div class="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                                <h3><a href="javaScript:void(0);">Register With Beagle Fintech</a></h3>
+                                <div class="icon-box">
+                                    <span class="icon flaticon-analysis"></span>
+                                </div>
+                                <div class="text">Create your account in 5 simple steps including profile, document
+                                    submission verification, application and approval.</div>
+                                <div class="more-link"><a class="read-more" href="javaScript:void(0);"><span
+                                            class="arrow fa fa-angle-right"></span> Read more</a></div>
+                            </div>
+                        </div>
+
+                        <!--Services Block-->
+                        <div class="services-block col-lg-4 col-md-6 col-sm-12 col-12">
+                            <div class="inner-box wow fadeInLeft" data-wow-delay="300ms" data-wow-duration="1500ms">
+                                <h3><a href="javaScript:void(0);">Choose Your Loan</a></h3>
+                                <div class="icon-box">
+                                    <span class="icon flaticon-sports-and-competition"></span>
+                                </div>
+                                <div class="text">Choose the offer with the terms that work the best for you. Choose the
+                                    offer with the terms that work the best for you.</div>
+                                <!-- <div class="more-link"><a class="read-more" href="javaScript:void(0);"><span
+                                            class="arrow fa fa-angle-right"></span> Read more</a></div> -->
+                            </div>
+                        </div>
+
+                        <!--Services Block-->
+                        <div class="services-block col-lg-4 col-md-6 col-sm-12 col-12">
+                            <div class="inner-box wow fadeInLeft" data-wow-delay="600ms" data-wow-duration="1500ms">
+                                <h3><a href="javaScript:void(0);">Get Your Funds</a></h3>
+                                <div class="icon-box">
+                                    <span class="icon flaticon-graph"></span>
+                                </div>
+                                <div class="text">Your money goes straight to your bank account via direct deposit. Your
+                                    money goes straight to your bank account via direct deposit.</div>
+                                <!-- <div class="more-link"><a class="read-more" href="javaScript:void(0);"><span
+                                            class="arrow fa fa-angle-right"></span> Read more</a></div> -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--End Services Section-->
+
+        <!--About Section-->
+        <section class="about-section">
+            <div class="auto-container">
+                <div class="row clearfix">
+
+                    <!--Title Column-->
+                    <div class="title-column col-lg-5 col-md-12 col-sm-12 col-12">
+                        <div class="inner-column">
+                            <!--Sec Title-->
+                            <div class="sec-title">
+                                <h2>Beginner's guide to Peer to Peer Lending</h2>
+                                <div class="title-text">Everything you need to know about P2P Lending in India.</div>
+                            </div>
+                            <div class="text">Duis aute irure dolor reprehenderit in voluptate velit essle cillum dolore
+                                eu fugiat nulla pariatur. Excepteur sint ocaec at cupdatat proident suntin culpa qui
+                                officia deserunt mol anim id esa laborum perspiciatis omnis.</div>
+                            <a href="javaScript:void(0);" class="theme-btn btn-style-five">About P2P Investment</a>
+                        </div>
+                    </div>
+                    <!--Video Column-->
+                    <div class="video-column col-lg-7 col-md-12 col-sm-12 ">
+                        <div class="inner-column wow fadeInRight" data-wow-delay="600ms" data-wow-duration="1500ms">
+                            <!--Video Box-->
+                            <div class="video-box">
+                                <figure class="image">
+                                    <img src="/static/veloce/images/resource/video-img.jpg" alt="">
+                                </figure>
+                                <a href="https://www.youtube.com/watch?v=kxPCFljwJws"
+                                    class="lightbox-image overlay-box">
+                                    <span style="background:white;color:black; padding-left: 5px; padding-top:2px;">
+                                        <i class="fas fa-play"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--End About Section-->
+
+        <!--Services Section Four-->
+        <section class="services-section-four">
+            <div class="auto-container">
+                <!--Sec Title-->
+                <div class="sec-title centered">
+                    <h2>Why Beagle?</h2>
+                </div>
+                <div class="row clearfix">
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-path"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">Affordable Loan Availability</a></h3>
+
+                        </div>
+                    </div>
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInDown" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-startup"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">No Pre Payment Charges</a></h3>
+
+                        </div>
+                    </div>
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-line-graph"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">Secure Process</a></h3>
+
+                        </div>
+                    </div>
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-speaker"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">Quick & Simple Process</a></h3>
+
+                        </div>
+                    </div>
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-analytics"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">Less Paper Work</a></h3>
+
+                        </div>
+                    </div>
+
+                    <!--Services Block Four-->
+                    <div class="services-block-four col-lg-4 col-md-6 col-sm-12">
+                        <div class="inner-box wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="icon-box">
+                                <span class="icon flaticon-handshake"></span>
+                            </div>
+                            <h3><a href="javaScript:void(0);">1st Time Borrower Can Also Apply</a></h3>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--End Services Section Four-->
+
+        <!--News Section Two-->
+        <section class="news-section-three">
+            <div class="auto-container">
+                <!--Sec Title-->
+                <div class="sec-title centered">
+                    <h2>Articles</h2>
+                </div>
+                <div class="row clearfix">
+
+                    <!--News Block Three-->
+                    <div class="news-block-three col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="image">
+                                <a href="b#"><img src="/static/veloce/images/resource/news-4.jpg" alt="" /></a>
+                            </div>
+                            <div class="lower-content">
+                                <ul class="post-info">
+                                    <li>SEPtember 23, 2018</li>
+                                    <li>Consultant</li>
+                                </ul>
+                                <h3><a href="javaScript:void(0);">Consecter elit dui eiusmod didunt labore dolor</a></h3>
+                                <div class="text">Acepteur sintas haecate sed ipsums cupidates nondui proident sunlt
+                                    culpa qui tempore officia sed ipsum tempor eserunt.</div>
+                                <a class="read-more" href="javaScript:void(0);"><span class="fa fa-angle-right"></span> Read more</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--News Block Three-->
+                    <div class="news-block-three col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="inner-box wow fadeIn" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="image">
+                                <a href="javaScript:void(0);"><img src="/static/veloce/images/resource/news-5.jpg" alt="" /></a>
+                            </div>
+                            <div class="lower-content">
+                                <ul class="post-info">
+                                    <li>august 21, 2018</li>
+                                    <li>finance</li>
+                                </ul>
+                                <h3><a href="javaScript:void(0);">Ipsum dolor sit amet eliters magna dolore aliqua</a></h3>
+                                <div class="text">Acepteur sintas haecate sed ipsums cupidates nondui proident sunlt
+                                    culpa qui tempore officia sed ipsum tempor eserunt.</div>
+                                <a class="read-more" href="javaScript:void(0);"><span class="fa fa-angle-right"></span> Read more</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--News Block Three-->
+                    <div class="news-block-three col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="inner-box wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
+                            <div class="image">
+                                <a href="javaScript:void(0);"><img src="/static/veloce/images/resource/news-6.jpg" alt="" /></a>
+                            </div>
+                            <div class="lower-content">
+                                <ul class="post-info">
+                                    <li>October 9, 2018</li>
+                                    <li>Analytics</li>
+                                </ul>
+                                <h3><a href="javaScript:void(0);">Consecter elit dui eiusmod didunt labore dolor</a></h3>
+                                <div class="text">Acepteur sintas haecate sed ipsums cupidates nondui proident sunlt
+                                    culpa qui tempore officia sed ipsum tempor eserunt.</div>
+                                <a class="read-more" href="javaScript:void(0);"><span class="fa fa-angle-right"></span> Read more</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--End News Section Two-->
+        <!--Calculator Section-->
+        <section class="calculator-section mt-5">
+            <div class="auto-container">
+                <!--Sec Title-->
+                <div class="sec-title text-center">
+                    <h2>Calculator</h2>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="text-center">
+                            <img src="/static/veloce/images/1.png" class="img-fluid mt-5 mb-5">
+                            <div class="ctitle" data-toggle="modal" data-target="#EMI" >EMI Calculator</div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="EMI" tabindex="-1" role="dialog" aria-labelledby="EMIModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="EMIModalLabel">Are you sure?</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Do you really want to select this company as a dealer ?</div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-success" id="get_id" href="">Confirm</a>
+                                    <a class="btn btn-danger" id="" href="" data-dismiss="modal">Cancel</a>
+                                    <!-- <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    p = float(input("Enter principal amount: "))
+                    R = float(input("Enter annual interest rate: "))
+                    n = int(input("Enter number of months: " ))
+
+                    # Calculating interest rate per month
+                    r = R/(12*100)
+
+                    # Calculating Equated Monthly Installment (EMI)
+                    emi = p * r * ((1+r)**n)/((1+r)**n - 1)
+
+                    print("Monthly EMI = ", emi)
+                    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="text-center">
+                            <img src="/static/veloce/images/2.png" class="img-fluid mt-5 mb-5">
+                            <div class="ctitle">Investment Diversification</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="text-center">
+                            <img src="/static/veloce/images/3.png" class="img-fluid mt-5 mb-5">
+                            <div class="ctitle">Wealth Builder</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="text-center">
+                            <img src="/static/veloce/images/4.png" class="img-fluid mt-5 mb-5">
+                            <div class="ctitle">Insta Loan Calculator</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--End Calculator Section-->
+
+        <!--Testimonial Section-->
+        <section class="testimonial-section mt-5">
+            <div class="auto-container">
+                <!--Sec Title-->
+                <div class="sec-title centered">
+                    <h2>What Users are Saying</h2>
+                </div>
+                <br>
+                <div class="single-item-carousel owl-carousel owl-theme">
+
+                    <!--Testimonial Block Two-->
+                    <div class="testimonial-block-two">
+                        <div class="inner-box">
+                            <div class="row clearfix">
+                                <!--Content Column-->
+                                <div class="content-column col-lg-7 col-md-7 col-sm-12 col-12">
+                                    <div class="inner-column">
+                                        <div class="text">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                            ea comod duis aute irure dolor reprehenderit voluptate velit esse cillum
+                                            dolore fugiat nulla pariatur eaxcepteur sint occaecat cupidatat non proident
+                                            sunt in culpa qui officia.</div>
+                                        <div class="author">Camron White</div>
+                                    </div>
+                                </div>
+                                <!--Image Column-->
+                                <div class="image-column col-lg-5 col-md-5 col-sm-12 ">
+                                    <div class="inner-column">
+                                        <div class="image">
+                                            <img src="/static/veloce/images/resource/author-1.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Testimonial Block Two-->
+                    <div class="testimonial-block-two">
+                        <div class="inner-box">
+                            <div class="row clearfix">
+                                <!--Content Column-->
+                                <div class="content-column col-lg-7 col-md-7 col-sm-12 col-12">
+                                    <div class="inner-column">
+                                        <div class="text">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                            ea comod duis aute irure dolor reprehenderit voluptate velit esse cillum
+                                            dolore fugiat nulla pariatur eaxcepteur sint occaecat cupidatat non proident
+                                            sunt in culpa qui officia.</div>
+                                        <div class="author">Camron White</div>
+                                    </div>
+                                </div>
+                                <!--Image Column-->
+                                <div class="image-column col-lg-5 col-md-5 col-sm-12">
+                                    <div class="inner-column">
+                                        <div class="image">
+                                            <img src="/static/veloce/images/resource/author-1.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Testimonial Block Two-->
+                    <div class="testimonial-block-two">
+                        <div class="inner-box">
+                            <div class="row clearfix">
+                                <!--Content Column-->
+                                <div class="content-column col-lg-7 col-md-7 col-sm-12 col-12   ">
+                                    <div class="inner-column">
+                                        <div class="text">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                                            ea comod duis aute irure dolor reprehenderit voluptate velit esse cillum
+                                            dolore fugiat nulla pariatur eaxcepteur sint occaecat cupidatat non proident
+                                            sunt in culpa qui officia.</div>
+                                        <div class="author">Camron White</div>
+                                    </div>
+                                </div>
+                                <!--Image Column-->
+                                <div class="image-column col-lg-5 col-md-5 col-sm-12">
+                                    <div class="inner-column">
+                                        <div class="image">
+                                            <img src="/static/veloce/images/resource/author-1.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!--End Testimonial Section-->
+
+        <!--Call To Action Section-->
+        <div class="call-to-action-section">
+            <div class="outer-container">
+                <div class="clearfix">
+
+                    <!--Left Column-->
+                    <div class="left-column clearfix ">
+                            <div class="image-layer col-sm-12" style="background-image: url(/static/veloce/images/background/1.jpg)">
+                        </div>
+                        <div class="inner-column">
+                            <h2>We help you to unlock & unleash the power <br> within your large scale Business</h2>
+                        </div>
+                         
+                    </div>
+
+                    <!--Right Column-->
+                    <div class="right-column">
+                       <div class="inner-column ">
+                            <a href="javaScript:void(0);" class="theme-btn btn-style-four">Inquiry Now</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--End Call To Action Section-->
+    </div>
+    <!--End pagewrapper-->
+    <!--Scroll to top-->
+    <div class="scroll-to-top scroll-to-target" data-target="html">
+        <span class="fa fa-angle-double-up"></span>
+    </div>
+
+    <!--Main Footer-->
+    <footer class="main-footer">
+        <div class="auto-container">
+            <!--Widgets Section-->
+            <div class="widgets-section">
+                <div class="row clearfix">
+                    <!--Column-->
+                    <div class="big-column col-lg-12 col-md-12 col-sm-12">
+                        <div class="row clearfix">
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h2>Connect with Us</h2>
+                                    <ul class="footer-link">
+                                                <li><a href="/about-veloce-fintech">About Beagle Fintech</a></li>
+                                                <li><a href="/how-veloce-fintech-works">How Beagle Fintech Works</a></li>
+                                                <li><a href="/testimonials">Testimonials</a></li>
+                                                <li><a href="/contact-us">Contact Us</a></li>
+                                                <li><a href="/faqs-ftr">FAQ's</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-3 col-md-3 col-sm-12 col-6">
+                                <div class="footer-widget links-widget">
+                                    <h2>Borrow</h2>
+                                    <ul class="footer-link">
+                                                <li><a href="/loans-ftr">Loans</a></li>
+                                                <li><a href="/loans-eligibility">Loan Eligibility</a></li>
+                                                <li><a href="/type-of-loans">Type of Loans</a></li>
+                                                <li><a href="/loans-rates-fees">Loans Rates & Fees</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--Footer Column-->
+                            <div class="footer-column col-lg-3 col-md-3 col-sm-12 col-6">
+                                <div class="footer-widget links-widget">
+                                    <h2>Policies</h2>
+                                           <ul class="footer-link">
+                                                <li><a href="/terms-of-use-new">Terms of use</a></li>
+                                                <li><a href="/terms-of-use-new">Privacy & Security Policy</a></li>
+                                                <li><a href="/grievance-redressal">Grievance Redressal</a></li>
+                                                <li><a href="/fair-practices-code">Fair Practices Code</a></li>
+                                                <li><a href="/disclaimer">RBI Guidelines & Disclaimer</a></li>
+                                            </ul>        
+                                    
+                                </div>
+                            </div>
+                            <div class="footer-column col-lg-3 col-md-3 col-sm-12">
+                                <div class="footer-widget links-widget">
+                                    <h2>Invest / Finance</h2>
+                                            <ul class="footer-link">
+                                                <li><a href="/finance-with-us">Finance With Us</a></li>
+                                                <li><a href="/finance-eligibility">Finance Eligibility</a></li>
+<!--                                                <li><a href="javaScript:void(0);">How to Start P2P Investment</a></li>-->
+<!--                                                <li><a href="javaScript:void(0);">Fees & Return</a></li>-->
+                                            </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Footer Bottom-->
+        <div class="footer-bottom">
+            <div class="auto-container">
+                <div class="row clearfix">
+                    <div class="column col-md-6 col-sm-12 col-xs-12 col-6">
+                        <div class="copyright">Copyrights &copy; 2020 Beagle Fintech. All Rights Reserved. </div>
+                    </div>
+                    <div class="column col-md-6 col-sm-12 col-xs-12 col-6">
+                        <ul class="footer-nav">
+                                    <li><a href="/terms-of-use-new">Privacy Policy</a></li>
+                                    <li><a href="/terms-of-use-new">Legal Terms</a></li>
+                                    <li><a href="/faqs-ftr">FAQ’s</a></li>
+                                    <li><a href="/support">Support</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--End Main Footer-->
+
+    <script src="/static/veloce/js/home/jquery.js"></script>
+    <script src="/static/veloce/js/home/bootstrap.min.js"></script>
+    <script src="/static/veloce/js/home/jquery.fancybox.js"></script>
+    <script src="/static/veloce/js/home/appear.js"></script>
+    <script src="/static/veloce/js/home/owl.js"></script>
+    <script src="/static/veloce/js/home/wow.js"></script>
+    <script src="/static/veloce/js/home/slick.js"></script>
+    <script src="/static/veloce/js/home/script.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+</div>
+
+<style>
+    .banner {
+        width: 100%;
+        height: 300px;
+        background-image: url('/static/veloce/images/cover.jpg');
+        background-size: cover;
+        background-position: center;
+        filter: hue-rotate(40deg) brightness(1.1);
+        color: black;
+    }
+
+    .banner .inner {
+        width: 100%;
+        height: 100%;
+        background: rgba(154, 236, 219, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .banner b {
+        font-size: 40px;
+        font-weight: bolder;
+        text-align: center;
+        flex: 0;
+    }
+
+    .banner p {
+        flex: 0;
+    }
+
+    .content {
+        padding: 0 !important;
+        max-width: 100%;
+        width: calc(-250px + 100%);
+    }
+</style>
+{%endblock canvas%}

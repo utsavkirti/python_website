@@ -1,0 +1,139 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Applications{%endblock title%}
+{%block pagetitle%}Applications{%endblock pagetitle%}
+
+{%block main%}
+<div class="applications" style="width:600px;">
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible mt-3" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+    {% if error %}
+    <br>
+    <div class="alert alert-danger" role="alert">
+        {{error}}
+    </div>
+    {% elif success %}
+    <br>
+    <div class="alert alert-success" role="alert">
+        {{success}}
+    </div>
+    {%endif%}
+
+    {%if not applications%}
+    <div style="text-align:center">
+        <br>No applications found!
+    </div>
+    {%endif%}
+
+    {%for application in applications%}
+        {% if not sanctioned %}
+            <a href="{%url 'my-loans' application.id%}" class='application-link'>
+                <div class='application'>
+                    <p>
+                        <b>Application No: {{application.id}}</b><br>
+                        <b>Bill No: {{application.applicationstep1.bill_no}}</b><br>
+                        <b>Loan Application Amount: {{application.applicationstep1.required_loan_amount}}</b><br>
+                        <b>Loan Application Date: {{application.created_at}}</b>
+                    </p>
+
+                    <div class="progressbar">
+                        <label>
+                            SANCTIONED AND ACCEPTED – DISBURSEMENT APPROVAL PENDING
+                        </label>
+                        <div class="bar"
+                        style="width:100%"></div>
+                    </div>
+                </div>
+            </a>
+        {%else%}
+            <a href="{%url 'my-loans' application.veloce_app.id %}" class='application-link'>
+                <div class='application'>
+                    <p>
+                        <b>Application No: {{application.veloce_app.id}}</b><br>
+                        <b>Bill No: {{application.veloce_app.applicationstep1.bill_no}}</b><br>
+                        <b>Loan Application Amount: {{application.veloce_app.applicationstep1.required_loan_amount}}</b><br>
+                        <b>Loan Application Date: {{application.veloce_app.created_at}}</b>
+                    </p>
+
+                    <div class="progressbar">
+                        <label>
+                            LOAN APPLICATION SANCTIONED BY LENDER
+                        </label>
+                        <div class="bar"
+                        style="width:100%"></div>
+                    </div>
+                </div>
+            </a>
+        {%endif%}
+    {%endfor%}
+    <br>
+</div>
+
+
+<style>
+    .new-button {
+        display: inline-block;
+        text-align: center;
+        padding: 15px;
+        width: 150px;
+        background-color: rgb(85, 230, 193);
+        border-radius: 40px;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+        transition: 1s;
+    }
+
+    .new-button:hover {
+        text-decoration: none;
+        color: black;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .application-link {
+        text-decoration: none !important;
+    }
+
+    .application {
+        padding: 20px;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        margin-top: 20px;
+        transition: background 0.5s;
+        color: #000;
+    }
+
+    .application:hover {
+        background: rgba(85, 230, 193, 0.2);
+    }
+
+    .application h3 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .application h3 em {
+        font-weight: normal;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+
+    .application form input {
+        width: 30px;
+        height: 30px;
+        padding: 5px;
+        background: rgba(240, 240, 240, 0.8);
+        cursor: pointer;
+    }
+</style>
+{%endblock main%}

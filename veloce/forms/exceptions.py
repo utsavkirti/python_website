@@ -1,0 +1,3 @@
+
+class SkipStep(Exception):
+    pass

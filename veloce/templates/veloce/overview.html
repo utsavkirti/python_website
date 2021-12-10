@@ -1,0 +1,104 @@
+{%extends "veloce/layouts/sidebar.html"%}
+
+{%load static%}
+
+{%block title%}Overview{%endblock title%}
+{%block pagetitle%}Overview{%endblock pagetitle%}
+
+{%block main%}
+<br>
+<form>
+    <ul class="checklist">
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>Registration</em></b>: Create your account on the Beagle Platform so that you can securely login
+                and access your applications.
+            </p>
+        </li>
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>User Verification</em></b>: Verify your email address and phone number, so we know we can get in
+                touch with you.
+            </p>
+        </li>
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>Profile Completion</em></b>: Tell us a bit more about yourself so that we can better match you.
+            </p>
+        </li>
+        <li>
+            <span>
+                {% if user.is_profile_reviewed and user.is_profile_verified %}✅{%else%}✅{%endif%}</span>
+            <p>
+                <b><em>Profile Verification</em></b>: Wait for us to double-check information in your profile so we can
+                make sure it's really you.
+                {% if user.is_profile_reviewed and not user.is_profile_verified %}
+                <br>
+<!--                <span class="veloce-badge">-->
+<!--                    <b>Rejected.</b> {{user.reject_reason}}-->
+<!--                </span>-->
+                {%endif%}
+            </p>
+        </li>
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>Application</em></b>: Submit your first application for a loan, with loan-specific information to
+                help us understand your needs.
+            </p>
+        </li>
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>Sanction</em></b>: Wait for us to approve your first application and determine an interest rate
+                that fits your profile and needs.
+            </p>
+        </li>
+        <li>
+            <span>✅</span>
+            <p>
+                <b><em>Agreement</em></b>: Finalize the loan contracts so that the money can start coming in!
+            </p>
+        </li>
+        <li>
+            <span>❌</span>
+            <p>
+                <b><em>Money</em></b>: Wait till investers see your application and start funding it at the agreed upon
+                interest rate.
+            </p>
+        </li>
+    </ul>
+    <div class="veloce-form-control full">
+        <div class="flex">
+            <a href="{% url 'list-application' %}" class="btn btn-primary">Continue</a>
+        </div>
+    </div>
+</form>
+
+<style>
+    .checklist {
+        padding: 0;
+        margin: 0
+    }
+
+    .checklist li {
+        display: flex;
+        align-items: top;
+    }
+
+    .checklist li span {
+        font-size: 15px;
+        flex: 0 !important;
+        padding: 3px 10px;
+    }
+
+    .checklist li p {
+        flex: 1;
+        text-align: left;
+        font-size: 18px;
+    }
+</style>
+{%endblock main%}
